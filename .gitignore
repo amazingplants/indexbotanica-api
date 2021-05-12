@@ -1,0 +1,6 @@
+.env
+.env.development
+.env.staging
+.env.production
+
+node_modules

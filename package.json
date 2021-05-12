@@ -1,0 +1,55 @@
+{
+  "name": "indexbotanica-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "ts-node-dev --transpile-only --no-notify api/server.ts",
+    "build": "tsc",
+    "generate": "ts-node --transpile-only api/schema",
+    "test": "npm run generate && jest"
+  },
+  "author": "",
+  "license": "AGPL-3.0-only",
+  "devDependencies": {
+    "@types/graphql-iso-date": "^3.4.0",
+    "@types/jest": "^26.0.23",
+    "get-port": "^5.1.1",
+    "graphql-request": "^3.4.0",
+    "jest": "^26.6.3",
+    "prisma": "^2.21.2",
+    "ts-jest": "^26.5.5",
+    "ts-node-dev": "^1.1.6",
+    "typescript": "^4.2.3"
+  },
+  "dependencies": {
+    "@prisma/client": "^2.18.0",
+    "apollo-server": "^2.21.1",
+    "apollo-server-koa": "^2.21.1",
+    "bcrypt": "^5.0.1",
+    "graphql": "^15.5.0",
+    "graphql-iso-date": "^3.6.1",
+    "graphql-middleware": "^6.0.10",
+    "graphql-scalars": "^1.9.0",
+    "graphql-shield": "^7.5.0",
+    "graphql-type-json": "^0.3.2",
+    "jsonwebtoken": "^8.5.1",
+    "koa": "^2.13.1",
+    "koa-graphiql-explorer": "^0.0.1",
+    "liquidjs": "^9.25.0",
+    "nexus": "^1.0.0",
+    "node-fetch": "^2.6.1",
+    "nodemailer": "^6.6.0"
+  },
+  "jest": {
+    "preset": "ts-jest",
+    "globals": {
+      "ts-jest": {
+        "diagnostics": {
+          "warnOnly": true
+        }
+      }
+    },
+    "testEnvironment": "node"
+  }
+}
