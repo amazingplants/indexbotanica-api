@@ -6,7 +6,7 @@ async function main() {
   const account = await prisma.accounts.create({
     data: {
       name: 'Foundation',
-      namespace: 'com.amazingplants'
+      namespace: 'test.indexbotanica'
     }
   })
 
@@ -15,16 +15,18 @@ async function main() {
       first_name: 'Jane',
       last_name: 'Doe',
       email: 'user1@indexbotanica.com',
-      hashed_password: "secrethash",
-      account_id: account.id
+      email_lower: 'user1@indexbotanica.com',
+      hashed_password: "$2b$10$ZGk1cu.QI8BOi1n2nQZ65.WdXTuBGdyvb3fNoijoq8eHf5s149Sma", // 'password'
+      account_id: account.id,
+      activated_at: new Date()
     }
   })
 
   const base = await prisma.bases.create({
     data: {
       name: 'Botanical Garden',
-      namespace: 'com.amazingplants.jpe',
-      slug: 'jpe',
+      namespace: 'test.indexbotanica.garden',
+      slug: 'garden',
       accession_number_format: '{{ year }}{{ year_index | pad: 4 }}',
       specimen_number_format: '{{ accession.number }}{{ qualifier }}',
       account_id: account.id

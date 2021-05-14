@@ -279,15 +279,17 @@ model users {
   first_name           String
   last_name            String
   email                String    @db.VarChar(255)
+  email_lower          String    @db.VarChar(255)
   hashed_password      String
   reset_password_token String?
   account_id           String    @db.Uuid
   created_at           DateTime  @default(dbgenerated("now()")) @db.Timestamptz(6)
+  activated_at         DateTime? @db.Timestamptz(6)
   deleted_at           DateTime? @db.Timestamptz(6)
 
   account accounts @relation(fields: [account_id], references: [id])
 
-  @@unique([email], name: "users_email_idx")
+  @@unique([email_lower], name: "users_email_lower_idx")
 }
 
 enum name_status {

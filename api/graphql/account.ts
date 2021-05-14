@@ -22,18 +22,3 @@ export const Account = objectType({
   }
 })
 
-
-export const AccountQuery = extendType({
-  type: 'Query',                         
-  definition(t) {
-    t.field('account', {
-      type: Account, 
-      args: {},
-      resolve(_root, args, ctx) {
-        // TODO
-        return ctx.db.accounts.findFirst()
-      }
-    })
-  },
-})
-

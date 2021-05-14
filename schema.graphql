@@ -36,6 +36,17 @@ type Account {
   namespace: String
 }
 
+input AccountInputType {
+  name: String!
+  namespace: String
+}
+
+type AuthPayload {
+  success: Boolean!
+  token: String
+  user: User
+}
+
 type Base {
   accession_number_format: String
   id: String!
@@ -86,8 +97,16 @@ input LocationsBoolInput {
   specimens: SpecimensRelationBoolInput
 }
 
+type MessagePayload {
+  message: String!
+  user: User
+}
+
 type Mutation {
+  activateAccount(token: String!): MessagePayload
   createAccession(accessioned_on: Date, data: JSONObject, taxon_id: String!): Accession!
+  login(cookie: Boolean!, email: String!, password: String!): AuthPayload!
+  signup(account: AccountInputType!, email: String!, first_name: String!, last_name: String!, password: String!): MessagePayload
 }
 
 type Name {
@@ -119,9 +138,9 @@ type Name {
 type Query {
   accession(id: String, number: String): Accession
   accessions(where: AccessionsBoolExp): [Accession]
-  account: Account
   base(id: String, slug: String): Base
   bases: [Base]
+  currentUser: User
   location(id: String, name: String): Location
   locations(where: LocationsBoolInput): [Location]
   name(id: String): Name
@@ -132,7 +151,6 @@ type Query {
   taxon(id: String): Taxon
   taxon_determination(id: String): TaxonDetermination
   taxon_determinations: [TaxonDetermination]
-  user: User
 }
 
 type Specimen {
@@ -197,6 +215,7 @@ enum TaxonRank {
 }
 
 type User {
+  account: Account!
   email: String
   first_name: String
   id: String!

@@ -58,6 +58,10 @@ export interface NexusGenInputs {
     none?: NexusGenInputs['AccessionsBoolExp'] | null; // AccessionsBoolExp
     some?: NexusGenInputs['AccessionsBoolExp'] | null; // AccessionsBoolExp
   }
+  AccountInputType: { // input type
+    name: string; // String!
+    namespace?: string | null; // String
+  }
   IntComparisonInputType: { // input type
     equals?: number | null; // Int
     gt?: number | null; // Int
@@ -113,9 +117,18 @@ export interface NexusGenScalars {
 export interface NexusGenObjects {
   Accession: AccessionSourceType;
   Account: AccountSourceType;
+  AuthPayload: { // root type
+    success: boolean; // Boolean!
+    token?: string | null; // String
+    user?: NexusGenRootTypes['User'] | null; // User
+  }
   Base: BaseSourceType;
   HierarchicalLocation: LocationSourceType;
   Location: LocationSourceType;
+  MessagePayload: { // root type
+    message: string; // String!
+    user?: NexusGenRootTypes['User'] | null; // User
+  }
   Mutation: {};
   Name: NameSourceType;
   Query: {};
@@ -153,6 +166,11 @@ export interface NexusGenFieldTypes {
     name: string | null; // String
     namespace: string | null; // String
   }
+  AuthPayload: { // field return type
+    success: boolean; // Boolean!
+    token: string | null; // String
+    user: NexusGenRootTypes['User'] | null; // User
+  }
   Base: { // field return type
     accession_number_format: string | null; // String
     id: string; // String!
@@ -174,8 +192,15 @@ export interface NexusGenFieldTypes {
     specimens: NexusGenRootTypes['Specimen'][] | null; // [Specimen!]
     specimens_count: number; // Int!
   }
+  MessagePayload: { // field return type
+    message: string; // String!
+    user: NexusGenRootTypes['User'] | null; // User
+  }
   Mutation: { // field return type
+    activateAccount: NexusGenRootTypes['MessagePayload'] | null; // MessagePayload
     createAccession: NexusGenRootTypes['Accession']; // Accession!
+    login: NexusGenRootTypes['AuthPayload']; // AuthPayload!
+    signup: NexusGenRootTypes['MessagePayload'] | null; // MessagePayload
   }
   Name: { // field return type
     aggregate: string | null; // String
@@ -205,9 +230,9 @@ export interface NexusGenFieldTypes {
   Query: { // field return type
     accession: NexusGenRootTypes['Accession'] | null; // Accession
     accessions: Array<NexusGenRootTypes['Accession'] | null> | null; // [Accession]
-    account: NexusGenRootTypes['Account'] | null; // Account
     base: NexusGenRootTypes['Base'] | null; // Base
     bases: Array<NexusGenRootTypes['Base'] | null> | null; // [Base]
+    currentUser: NexusGenRootTypes['User'] | null; // User
     location: NexusGenRootTypes['Location'] | null; // Location
     locations: Array<NexusGenRootTypes['Location'] | null> | null; // [Location]
     name: NexusGenRootTypes['Name'] | null; // Name
@@ -218,7 +243,6 @@ export interface NexusGenFieldTypes {
     taxon: NexusGenRootTypes['Taxon'] | null; // Taxon
     taxon_determination: NexusGenRootTypes['TaxonDetermination'] | null; // TaxonDetermination
     taxon_determinations: Array<NexusGenRootTypes['TaxonDetermination'] | null> | null; // [TaxonDetermination]
-    user: NexusGenRootTypes['User'] | null; // User
   }
   Specimen: { // field return type
     accession: NexusGenRootTypes['Accession']; // Accession!
@@ -242,6 +266,7 @@ export interface NexusGenFieldTypes {
     taxon: NexusGenRootTypes['Taxon']; // Taxon!
   }
   User: { // field return type
+    account: NexusGenRootTypes['Account']; // Account!
     email: string | null; // String
     first_name: string | null; // String
     id: string; // String!
@@ -267,6 +292,11 @@ export interface NexusGenFieldTypeNames {
     name: 'String'
     namespace: 'String'
   }
+  AuthPayload: { // field return type name
+    success: 'Boolean'
+    token: 'String'
+    user: 'User'
+  }
   Base: { // field return type name
     accession_number_format: 'String'
     id: 'String'
@@ -288,8 +318,15 @@ export interface NexusGenFieldTypeNames {
     specimens: 'Specimen'
     specimens_count: 'Int'
   }
+  MessagePayload: { // field return type name
+    message: 'String'
+    user: 'User'
+  }
   Mutation: { // field return type name
+    activateAccount: 'MessagePayload'
     createAccession: 'Accession'
+    login: 'AuthPayload'
+    signup: 'MessagePayload'
   }
   Name: { // field return type name
     aggregate: 'String'
@@ -319,9 +356,9 @@ export interface NexusGenFieldTypeNames {
   Query: { // field return type name
     accession: 'Accession'
     accessions: 'Accession'
-    account: 'Account'
     base: 'Base'
     bases: 'Base'
+    currentUser: 'User'
     location: 'Location'
     locations: 'Location'
     name: 'Name'
@@ -332,7 +369,6 @@ export interface NexusGenFieldTypeNames {
     taxon: 'Taxon'
     taxon_determination: 'TaxonDetermination'
     taxon_determinations: 'TaxonDetermination'
-    user: 'User'
   }
   Specimen: { // field return type name
     accession: 'Accession'
@@ -356,6 +392,7 @@ export interface NexusGenFieldTypeNames {
     taxon: 'Taxon'
   }
   User: { // field return type name
+    account: 'Account'
     email: 'String'
     first_name: 'String'
     id: 'String'
@@ -373,10 +410,25 @@ export interface NexusGenArgTypes {
     }
   }
   Mutation: {
+    activateAccount: { // args
+      token: string; // String!
+    }
     createAccession: { // args
       accessioned_on?: NexusGenScalars['Date'] | null; // Date
       data?: NexusGenScalars['JSONObject'] | null; // JSONObject
       taxon_id: string; // String!
+    }
+    login: { // args
+      cookie: boolean; // Boolean!
+      email: string; // String!
+      password: string; // String!
+    }
+    signup: { // args
+      account: NexusGenInputs['AccountInputType']; // AccountInputType!
+      email: string; // String!
+      first_name: string; // String!
+      last_name: string; // String!
+      password: string; // String!
     }
   }
   Query: {
